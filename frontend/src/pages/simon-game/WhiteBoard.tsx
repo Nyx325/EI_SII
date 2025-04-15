@@ -14,8 +14,8 @@ export const Whiteboard: React.FC<WhiteboardProps> = ({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [isErasing, setIsErasing] = useState(false);
-  const [undoStack, setUndoStack] = useState<string[]>([]);
-  const [redoStack, setRedoStack] = useState<string[]>([]);
+  const [, setUndoStack] = useState<string[]>([]);
+  const [, setRedoStack] = useState<string[]>([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;

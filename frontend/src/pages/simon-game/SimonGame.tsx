@@ -24,15 +24,16 @@ export const SimonGame: React.FC = () => {
 
   return (
     <>
-      <nav>
-        <button onClick={handleGoMainMenu}>Volver</button>
-      </nav>
+      <nav></nav>
 
       <section>
         <div>Seccion de escritura</div>
-        {gameState !== GameState.Playing && (
-          <button>{gameStartButtonText[gameState]}</button>
-        )}
+        <div>
+          <button onClick={handleGoMainMenu}>Volver</button>
+          {gameState !== GameState.Playing && (
+            <button>{gameStartButtonText[gameState]}</button>
+          )}
+        </div>
       </section>
       <Whiteboard />
     </>
