@@ -1,22 +1,41 @@
 import React, { useState } from "react";
 import { AppView, useAppContext } from "../../state";
 import { Whiteboard } from "./WhiteBoard";
+import { figures } from "../../data";
+import { randomIntFromInterval } from "../../etc/randomInt";
 
-enum GameState {
+enum ViewState {
   Idle = "Idle",
   Playing = "Playing",
   GameFinished = "GameFinished",
 }
 
+enum GameState {
+  ShowingPattern,
+  Drawing,
+  Finish,
+}
+
 const gameStartButtonText = {
-  [GameState.GameFinished]: "Volver a jugar",
-  [GameState.Idle]: "Iniciar juego",
-  [GameState.Playing]: "",
+  [ViewState.GameFinished]: "Volver a jugar",
+  [ViewState.Idle]: "Iniciar juego",
+  [ViewState.Playing]: "",
 };
+
+interface FigureList {
+  figureIndexes: number[];
+  currFigure?: number;
+}
+
+const getRandomIndex = () => randomIntFromInterval(0, figures.length - 1);
 
 export const SimonGame: React.FC = () => {
   const { setAppState } = useAppContext();
-  const [gameState, setGameState] = useState<GameState>(GameState.Idle);
+  const [viewState, setViewState] = useState<ViewState>(ViewState.Idle);
+  const [figuresList, setFiguresList] = useState<FigureList>({
+    figureIndexes: [],
+  });
+  const [figuresDrawed, setFiguresDrawed] = useState<number>(0);
 
   const handleGoMainMenu = () => {
     setAppState((prev) => ({ ...prev, view: AppView.MainMenu }));
@@ -24,14 +43,12 @@ export const SimonGame: React.FC = () => {
 
   return (
     <>
-      <nav></nav>
-
       <section>
         <div>Seccion de escritura</div>
         <div>
           <button onClick={handleGoMainMenu}>Volver</button>
-          {gameState !== GameState.Playing && (
-            <button>{gameStartButtonText[gameState]}</button>
+          {viewState !== ViewState.Playing && (
+            <button>{gameStartButtonText[viewState]}</button>
           )}
         </div>
       </section>
