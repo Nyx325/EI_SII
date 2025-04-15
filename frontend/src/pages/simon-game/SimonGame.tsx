@@ -44,7 +44,11 @@ export const SimonGame: React.FC = () => {
   return (
     <>
       <section>
-        <div>Seccion de escritura</div>
+        <article>
+          {figuresList.currFigure
+            ? figures[figuresList.currFigure].name
+            : "¿Quieres jugar un juego?"}
+        </article>
         <div>
           <button onClick={handleGoMainMenu}>Volver</button>
           {viewState !== ViewState.Playing && (
