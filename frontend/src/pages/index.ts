@@ -1,2 +1,2 @@
-export * from "./simon-game"
-export * from "./home"
+export * from "./trivia";
+export * from "./home";

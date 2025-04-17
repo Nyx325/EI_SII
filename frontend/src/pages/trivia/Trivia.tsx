@@ -1,62 +1,99 @@
 import React, { useState } from "react";
 import { AppView, useAppContext } from "../../state";
 import { Whiteboard } from "./WhiteBoard";
-import { figures } from "../../data";
+import { figures, Figure } from "../../data";
 import { randomIntFromInterval } from "../../etc/randomInt";
 
-enum ViewState {
+enum GameState {
   Idle = "Idle",
   Playing = "Playing",
-  GameFinished = "GameFinished",
+  ShowingResults = "ShowingResults",
 }
 
-enum GameState {
-  ShowingPattern,
-  Drawing,
-  Finish,
-}
-
-const gameStartButtonText = {
-  [ViewState.GameFinished]: "Volver a jugar",
-  [ViewState.Idle]: "Iniciar juego",
-  [ViewState.Playing]: "",
+const startGameBtnLegend = {
+  [GameState.Idle]: "Iniciar juego",
+  [GameState.Playing]: "Finalizar juego",
+  [GameState.ShowingResults]: "Volver a jugar",
 };
 
-interface FigureList {
-  figureIndexes: number[];
-  currFigure?: number;
+interface Question {
+  question: string;
+  answer: Figure;
 }
-
-const getRandomIndex = () => randomIntFromInterval(0, figures.length - 1);
 
 export const SimonGame: React.FC = () => {
   const { setAppState } = useAppContext();
-  const [viewState, setViewState] = useState<ViewState>(ViewState.Idle);
-  const [figuresList, setFiguresList] = useState<FigureList>({
-    figureIndexes: [],
-  });
-  const [figuresDrawed, setFiguresDrawed] = useState<number>(0);
+  const [gameState, setGameState] = useState(GameState.Idle);
+  const [hits, setHits] = useState(0);
+  const [errors, setErrors] = useState(0);
+  const [hitRate, setHitRate] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState<Question | undefined>(
+    undefined,
+  );
 
   const handleGoMainMenu = () => {
     setAppState((prev) => ({ ...prev, view: AppView.MainMenu }));
   };
 
+  const getRandomQuestion = (): [string, Figure] => {
+    const figureIndex = randomIntFromInterval(0, figures.length - 1);
+    const figure = figures[figureIndex];
+
+    const questionIndex = randomIntFromInterval(0, figure.questions.length - 1);
+    const question = figure.questions[questionIndex];
+
+    return [question, figure];
+  };
+
+  const startGame = () => {
+    setGameState(GameState.Playing);
+    const [question, answer] = getRandomQuestion();
+    setCurrentQuestion({
+      question,
+      answer,
+    });
+  };
+
+  const endGame = () => {
+    setGameState(GameState.ShowingResults);
+    const ratio = (hits * 100) / (hits + errors);
+    setHitRate(Number.isNaN(ratio) ? 0 : ratio);
+  };
+
+  const handleChangeGameState = () => {
+    const nextState = {
+      [GameState.Idle]: startGame,
+      [GameState.Playing]: endGame,
+      [GameState.ShowingResults]: startGame,
+    };
+
+    nextState[gameState]();
+  };
+
   return (
     <>
-      <section>
-        <article>
-          {figuresList.currFigure
-            ? figures[figuresList.currFigure].name
-            : "¿Quieres jugar un juego?"}
-        </article>
-        <div>
-          <button onClick={handleGoMainMenu}>Volver</button>
-          {viewState !== ViewState.Playing && (
-            <button>{gameStartButtonText[viewState]}</button>
-          )}
-        </div>
-      </section>
-      <Whiteboard />
+      <nav>
+        <button onClick={handleGoMainMenu}>Volver</button>
+        <button onClick={handleChangeGameState}>
+          {startGameBtnLegend[gameState]}
+        </button>
+      </nav>
+      <article>
+        {currentQuestion ? currentQuestion.question : "¿Has estudiado?"}
+      </article>
+      {gameState === GameState.Playing && (
+        <section>
+          <article>Aciertos: {hits}</article>
+          <article>Desaciertos: {errors}</article>
+        </section>
+      )}
+      {gameState === GameState.ShowingResults && (
+        <section>
+          <article>Juego finalizado</article>
+          <article>Tasa de aciertos: {hitRate.toFixed(2)}%</article>
+        </section>
+      )}
+      <Whiteboard drawColor="#fff" boardColor="#000" />
     </>
   );
 };
