@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { AppView, useAppContext } from "../../state";
-import { Whiteboard } from "./WhiteBoard";
+import { Whiteboard, WhiteBoardRef } from "./WhiteBoard";
 import { figures, Figure } from "../../data";
 import { randomIntFromInterval } from "../../etc/randomInt";
 
@@ -16,9 +16,14 @@ const startGameBtnLegend = {
   [GameState.ShowingResults]: "Volver a jugar",
 };
 
+interface Answer {
+  index: number;
+  figure: Figure;
+}
+
 interface Question {
   question: string;
-  answer: Figure;
+  answer: Answer;
 }
 
 export const SimonGame: React.FC = () => {
@@ -30,28 +35,32 @@ export const SimonGame: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState<Question | undefined>(
     undefined,
   );
+  const whiteboardRef = useRef<WhiteBoardRef>(null);
 
   const handleGoMainMenu = () => {
     setAppState((prev) => ({ ...prev, view: AppView.MainMenu }));
   };
 
-  const getRandomQuestion = (): [string, Figure] => {
+  const getRandomQuestion = (): Question => {
     const figureIndex = randomIntFromInterval(0, figures.length - 1);
     const figure = figures[figureIndex];
 
     const questionIndex = randomIntFromInterval(0, figure.questions.length - 1);
     const question = figure.questions[questionIndex];
 
-    return [question, figure];
+    return {
+      question,
+      answer: {
+        index: figureIndex,
+        figure,
+      },
+    };
   };
 
   const startGame = () => {
     setGameState(GameState.Playing);
-    const [question, answer] = getRandomQuestion();
-    setCurrentQuestion({
-      question,
-      answer,
-    });
+    const question = getRandomQuestion();
+    setCurrentQuestion(question);
   };
 
   const endGame = () => {
@@ -68,6 +77,15 @@ export const SimonGame: React.FC = () => {
     };
 
     nextState[gameState]();
+  };
+
+  const handleSendCanvas = () => {
+    const imageData = whiteboardRef.current?.getCanvasDataUrl();
+    console.log(imageData);
+    const a = document.createElement("a");
+    a.href = imageData as string;
+    a.download = "whiteboard.png";
+    a.click();
   };
 
   return (
@@ -93,7 +111,12 @@ export const SimonGame: React.FC = () => {
           <article>Tasa de aciertos: {hitRate.toFixed(2)}%</article>
         </section>
       )}
-      <Whiteboard drawColor="#fff" boardColor="#000" />
+      <section>
+        <Whiteboard drawColor="#fff" boardColor="#000" ref={whiteboardRef} />
+        {gameState === GameState.Playing && (
+          <button onClick={handleSendCanvas}>Enviar</button>
+        )}
+      </section>
     </>
   );
 };
