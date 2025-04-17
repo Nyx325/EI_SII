@@ -81,11 +81,14 @@ export const SimonGame: React.FC = () => {
 
   const handleSendCanvas = () => {
     const imageData = whiteboardRef.current?.getCanvasDataUrl();
-    console.log(imageData);
-    const a = document.createElement("a");
-    a.href = imageData as string;
-    a.download = "whiteboard.png";
-    a.click();
+
+    fetch("http://127.0.0.1:5000/opencv", {
+      method: "POST",
+      body: JSON.stringify({ image: imageData }),
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => {
+      console.log("Procesao");
+    });
   };
 
   return (

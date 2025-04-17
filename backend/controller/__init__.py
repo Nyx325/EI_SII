@@ -1,0 +1,1 @@
+from .opencv_controller import process_image

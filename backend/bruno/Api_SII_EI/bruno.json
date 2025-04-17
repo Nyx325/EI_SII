@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Api_SII_EI",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
