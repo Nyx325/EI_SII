@@ -16,6 +16,18 @@ const startGameBtnLegend = {
   [GameState.ShowingResults]: "Volver a jugar",
 };
 
+const data: Record<number, string> = {
+  0: "Corazón",
+  1: "Cuadrado",
+  2: "Pentágono",
+  3: "Rombo",
+  4: "Triángulo",
+};
+
+const matchFigure = (value: number): string | undefined => {
+  return data[value];
+};
+
 interface Answer {
   index: number;
   figure: Figure;
@@ -86,9 +98,15 @@ export const SimonGame: React.FC = () => {
       method: "POST",
       body: JSON.stringify({ image: imageData }),
       headers: { "Content-Type": "application/json" },
-    }).then((response) => {
-      console.log("Procesao");
-    });
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((response) => {
+        const figura = Number(response.figure);
+        console.log(matchFigure(figura));
+      })
+      .catch((e) => console.error(e));
   };
 
   return (
