@@ -1,54 +1,69 @@
-# React + TypeScript + Vite
+# Evidencia Integradora Sistemas Inteligentes
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Un proyecto basado en una trivia que hace preguntas sobre figuras
+geométricas y para responder el usuario debe dibujar la figura correspondiente
+haciendo uso de reconocimiento de imágenes con python para esto
 
-Currently, two official plugins are available:
+## Cómo desplegar
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### Prerequisitos
 
-## Expanding the ESLint configuration
+- Entorno de ejecución de Javascript como [nodejs](https://nodejs.org/en)
+- Python `3.8.20` o `3.8.10`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Ejecutar backend
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+Una vez preparado python para el proyecto pondremos en marcha el
+backend considerando que se encuentran en la raíz del proyecto
+
+Comprobar versión de python
+
+```bash
+python --version
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Instalar las dependencias
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+## Para python 3.8.20
+pip install -r backend/requirements.txt
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+## Para python 3.8.10
+pip install -r backend/requirements2.txt
 ```
+
+Ejecutar el backend
+
+```bash
+cd backend
+flask run
+```
+
+### Ejecutar frontend
+
+Considerando nuevamente que se está en la raíz del proyecto
+
+Instalar las dependencias
+
+```bash
+cd frontend
+npm install
+```
+
+Ejecutar el frontend
+
+```bash
+npm run dev
+```
+
+Debería mostrarse algo como esto en la terminal:
+
+```bash
+  VITE v6.3.2  ready in 225 ms
+
+  ➜  Local:   http://localhost:5173/
+  ➜  Network: use --host to expose
+  ➜  press h + enter to show help
+```
+
+Entrar a la url dada, en este caso `http://localhost:5173/`
