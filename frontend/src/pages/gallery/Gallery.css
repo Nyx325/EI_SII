@@ -1,0 +1,94 @@
+.figura > h2,
+.figura > article:not(.frase-motivadora),
+.figura > .formulas {
+  text-align: left;
+}
+
+.encabezado {
+  text-align: center;
+  padding: 2rem;
+  background-color: #1f1f1f;
+}
+
+.encabezado h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.encabezado p {
+  font-size: 1.2rem;
+  color: #bbbbbb;
+}
+
+.contenido {
+  max-width: 1200px;
+  margin: auto;
+  padding: 2rem;
+}
+
+.figura {
+  margin-bottom: 4rem;
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+}
+
+.figura h2 {
+  color: #66d9ef;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.imagen-figura {
+  width: 200px;
+  display: block;
+  margin: 1rem auto;
+}
+
+ul {
+  list-style-type: square;
+  margin-left: 2rem;
+}
+
+.formulas {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background-color: #2c2c2c;
+  border-radius: 8px;
+}
+
+.formulas h3 {
+  margin-top: 0;
+  color: #ffd700;
+}
+
+.frase-motivadora {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-style: italic;
+  color: #81c784;
+  font-size: 1.2rem;
+}
+
+/* Botón para el juegoo */
+.pie {
+  text-align: center;
+  padding: 2rem;
+  background-color: #1f1f1f;
+}
+
+.boton-jugar {
+  background-color: #66d9ef;
+  color: #121212;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 30px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.boton-jugar:hover {
+  background-color: #4abedb;
+}
