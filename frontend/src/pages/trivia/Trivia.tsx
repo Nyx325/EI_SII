@@ -45,7 +45,7 @@ export const SimonGame: React.FC = () => {
   const [errors, setErrors] = useState(0);
   const [hitRate, setHitRate] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | undefined>(
-    undefined,
+    undefined
   );
   const whiteboardRef = useRef<WhiteBoardRef>(null);
 
@@ -92,19 +92,28 @@ export const SimonGame: React.FC = () => {
   };
 
   const handleSendCanvas = () => {
-    const imageData = whiteboardRef.current?.getCanvasDataUrl();
+    const image = whiteboardRef.current?.getCanvasDataUrl();
 
     fetch("http://127.0.0.1:5000/opencv", {
       method: "POST",
-      body: JSON.stringify({ image: imageData }),
+      body: JSON.stringify({ image }),
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => {
+        if (!response.ok) {
+          throw Error("Ocurrió un error al procesar la imagen");
+        }
         return response.json();
       })
       .then((response) => {
-        const figura = Number(response.figure);
-        console.log(matchFigure(figura));
+        const figure = Number(response.figure);
+        const correctFigure = currentQuestion?.answer.index;
+        console.log(matchFigure(figure));
+        console.log(
+          `Respuesta dada: ${matchFigure(figure)} Respuesta correcta: ${matchFigure(correctFigure ?? 20)}`
+        );
+        if (currentQuestion?.answer.index === figure) console.log("Correcto");
+        else console.log("Incorrecto");
       })
       .catch((e) => console.error(e));
   };
