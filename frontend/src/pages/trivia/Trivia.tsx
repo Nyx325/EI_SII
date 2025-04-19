@@ -3,6 +3,7 @@ import { AppView, useAppContext } from "../../state";
 import { Whiteboard, WhiteBoardRef } from "./WhiteBoard";
 import { figures, Figure } from "../../data";
 import { randomIntFromInterval } from "../../etc/randomInt";
+import Alert, { AlertType } from "../../components/Alert";
 
 enum GameState {
   Idle = "Idle",
@@ -45,8 +46,11 @@ export const SimonGame: React.FC = () => {
   const [errors, setErrors] = useState(0);
   const [hitRate, setHitRate] = useState(0);
   const [currentQuestion, setCurrentQuestion] = useState<Question | undefined>(
-    undefined
+    undefined,
   );
+  const [alertMessage, setAlertMessage] = useState<
+    { message: string; type: AlertType } | undefined
+  >(undefined);
   const whiteboardRef = useRef<WhiteBoardRef>(null);
 
   const handleGoMainMenu = () => {
@@ -70,12 +74,14 @@ export const SimonGame: React.FC = () => {
   };
 
   const startGame = () => {
+    setAlertMessage(undefined);
     setGameState(GameState.Playing);
     const question = getRandomQuestion();
     setCurrentQuestion(question);
   };
 
   const endGame = () => {
+    setAlertMessage(undefined);
     setGameState(GameState.ShowingResults);
     const ratio = (hits * 100) / (hits + errors);
     setHitRate(Number.isNaN(ratio) ? 0 : ratio);
@@ -92,6 +98,8 @@ export const SimonGame: React.FC = () => {
   };
 
   const handleSendCanvas = () => {
+    setAlertMessage(undefined);
+
     const image = whiteboardRef.current?.getCanvasDataUrl();
 
     fetch("http://127.0.0.1:5000/opencv", {
@@ -110,12 +118,38 @@ export const SimonGame: React.FC = () => {
         const correctFigure = currentQuestion?.answer.index;
         console.log(matchFigure(figure));
         console.log(
-          `Respuesta dada: ${matchFigure(figure)} Respuesta correcta: ${matchFigure(correctFigure ?? 20)}`
+          `Respuesta dada: ${matchFigure(figure)} Respuesta correcta: ${matchFigure(correctFigure ?? 20)}`,
         );
-        if (currentQuestion?.answer.index === figure) console.log("Correcto");
-        else console.log("Incorrecto");
+
+        if (figure === correctFigure) {
+          setAlertMessage({
+            message: "¡Correcto!",
+            type: AlertType.SUCCESS,
+          });
+
+          setHits(hits + 1);
+        } else {
+          setAlertMessage({
+            message: `¡Casi! la respuesta era: ${matchFigure(correctFigure as number)}`,
+            type: AlertType.WARNING,
+          });
+
+          setErrors(errors + 1);
+        }
+
+        setTimeout(() => {
+          setAlertMessage(undefined);
+          const question = getRandomQuestion();
+          setCurrentQuestion(question);
+        }, 3000);
       })
-      .catch((e) => console.error(e));
+      .catch((e) => {
+        console.error(e);
+        setAlertMessage({
+          message: "Error al procesar la imagen",
+          type: AlertType.DANGER,
+        });
+      });
   };
 
   return (
@@ -127,7 +161,14 @@ export const SimonGame: React.FC = () => {
         </button>
       </nav>
       <article>
-        {currentQuestion ? currentQuestion.question : "¿Has estudiado?"}
+        {currentQuestion && gameState === GameState.Playing ? (
+          <h2>{currentQuestion.question}</h2>
+        ) : (
+          <h2>¿Has estudiado?</h2>
+        )}
+        {alertMessage && (
+          <Alert message={alertMessage.message} type={alertMessage.type} />
+        )}
       </article>
       {gameState === GameState.Playing && (
         <section>
@@ -143,10 +184,10 @@ export const SimonGame: React.FC = () => {
       )}
       <section>
         <Whiteboard drawColor="#fff" boardColor="#000" ref={whiteboardRef} />
-        {gameState === GameState.Playing && (
-          <button onClick={handleSendCanvas}>Enviar</button>
-        )}
       </section>
+      {gameState === GameState.Playing && (
+        <button onClick={handleSendCanvas}>Enviar</button>
+      )}
     </>
   );
 };
