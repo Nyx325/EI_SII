@@ -1,4 +1,3 @@
-.figura > h2,
 .figura > article:not(.frase-motivadora),
 .figura > .formulas {
   text-align: left;
@@ -7,17 +6,18 @@
 .encabezado {
   text-align: center;
   padding: 2rem;
-  background-color: #1f1f1f;
+  background-color: var(--header-bg);
 }
 
 .encabezado h1 {
   font-size: 2.5rem;
   margin-bottom: 0.5rem;
+  color: var(--text-primary);
 }
 
 .encabezado p {
   font-size: 1.2rem;
-  color: #bbbbbb;
+  color: var(--muted-text);
 }
 
 .contenido {
@@ -28,10 +28,10 @@
 
 .figura {
   margin-bottom: 4rem;
-  background-color: #1a1a1a;
+  background-color: var(--card-bg);
   padding: 2rem;
   border-radius: 12px;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 10px var(--shadow-color);
 }
 
 .figura h2 {
@@ -54,7 +54,7 @@ ul {
 .formulas {
   margin-top: 1.5rem;
   padding: 1rem;
-  background-color: #2c2c2c;
+  background-color: var(--card-bg2);
   border-radius: 8px;
 }
 
@@ -79,8 +79,8 @@ ul {
 }
 
 .boton-jugar {
-  background-color: #66d9ef;
-  color: #121212;
+  background-color: var(--accent);
+  color: var(--text-primary);
   border: none;
   padding: 1rem 2rem;
   border-radius: 30px;

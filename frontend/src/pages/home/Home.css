@@ -12,11 +12,12 @@
 
 .home-nav {
   width: 250px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: color-mix(in srgb, var(--card-bg) 90%, transparent);
   padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  box-shadow: 0 0 10px var(--shadow-color);
 }
 
 .menu-list {
@@ -29,8 +30,8 @@
   margin: 10px 0;
   padding: 10px;
   text-align: center;
-  background-color: rgba(255, 255, 255, 0.2);
-  color: #fff;
+  background-color: var(--card-bg2);
+  color: var(--text-primary);
   font-size: 1.2rem;
   border-radius: 5px;
   cursor: pointer;
@@ -38,5 +39,6 @@
 }
 
 .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: var(--accent);
+  color: var(--bg-page);
 }

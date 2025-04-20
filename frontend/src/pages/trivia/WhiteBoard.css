@@ -1,49 +1,58 @@
-.whiteboard-container {
-  position: relative;
-  display: inline-block;
-}
+  .whiteboard-container {
+    position: relative;
+    display: inline-block;
+    color: var(--icon-fill);
+  }
 
-.whiteboard-canvas {
-  border: 1px solid #ccc;
-  width: 600px;
-  height: 400px;
-}
+  .whiteboard-container.light {
+    --icon-fill: #000; /* tema claro → iconos oscuros */
+  }
 
-.whiteboard-canvas.drawing {
-  cursor: crosshair;
-}
+  .whiteboard-container.dark {
+    --icon-fill: #fff; /* tema oscuro → iconos claros */
+  }
 
-.whiteboard-canvas.erasing {
-  cursor: not-allowed;
-}
+  .whiteboard-canvas {
+    border: 1px solid #ccc;
+    width: 600px;
+    height: 400px;
+  }
 
-.button-container {
-  position: absolute;
-  top: 50%;
-  right: -70px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
+  .whiteboard-canvas.drawing {
+    cursor: crosshair;
+  }
 
-.icon-button {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: transparent;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-}
+  .whiteboard-canvas.erasing {
+    cursor: not-allowed;
+  }
 
-.icon-button svg {
-  width: 70%;
-  height: 70%;
-}
+  .button-container {
+    position: absolute;
+    top: 50%;
+    right: -70px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-.button-selected {
-  background-color: #33a5ff;
-}
+  .icon-button {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .icon-button svg {
+    width: 70%;
+    height: 70%;
+  }
+
+  .button-selected {
+    background-color: #33a5ff;
+  }
