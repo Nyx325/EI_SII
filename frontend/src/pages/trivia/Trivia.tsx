@@ -143,7 +143,7 @@ export const SimonGame: React.FC = () => {
             const nextQ = getRandomQuestion();
             if (nextQ) setCurrentQuestion(nextQ);
           }
-        }, 1000);
+        }, 3000);
       })
       .catch(() => {
         setAlertMessage({ message: "Error al procesar la imagen", type: AlertType.DANGER });
