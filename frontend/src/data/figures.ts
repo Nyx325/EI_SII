@@ -1,53 +1,96 @@
 import { FigureProps } from "../pages/gallery/Figure";
 
+export type Question = {
+  str: string;
+  answered: boolean;
+};
+
 export type Figure = {
   name: string;
   color: string;
-  questions: string[];
+  questions: Question[];
 };
-//  triángulo, cuadrado, rombo, pentágono y corazón
+
 export const figures: Figure[] = [
   {
     name: "Corazón",
     color: "ff0b0b",
     questions: [
-      "¿Qué figura representa el amor y combina curvas y simetría perfecta?",
-      '¿Qué figura se forma usando dos curvas semicirculares y tiene un "piquito" en el centro?',
+      {
+        str: "¿Qué figura representa el amor y combina curvas y simetría perfecta?",
+        answered: false,
+      },
+      {
+        str: "¿Qué figura se forma usando dos curvas semicirculares y tiene un 'piquito' en el centro?",
+        answered: false,
+      },
     ],
   },
   {
     name: "Cuadrado",
     color: "a233ff",
     questions: [
-      "¿Cuál es la figura que tiene cuatro lados iguales y todos sus ángulos son de 90 grados?",
+      {
+        str: "¿Cuál es la figura que tiene cuatro lados iguales y todos sus ángulos son de 90 grados?",
+        answered: false,
+      },
     ],
   },
   {
     name: "Pentágono",
     color: "ff850b",
     questions: [
-      "¿En qué figura todos sus lados y ángulos son iguales y tiene cinco lados?",
-      "Si ves una figura con cinco lados iguales, ¿Qué figura estás viendo?",
+      {
+        str: "¿En qué figura todos sus lados y ángulos son iguales y tiene cinco lados?",
+        answered: false,
+      },
+      {
+        str: "Si ves una figura con cinco lados iguales, ¿Qué figura estás viendo?",
+        answered: false,
+      },
     ],
   },
   {
     name: "Rombo",
     color: "ff0bc4",
     questions: [
-      "¿Cuál es el nombre de la figura que parece un cuadrado inclinado y tiene las diagonales que se cruzan en ángulo recto?",
-      "¿Cuál tiene dos ejes de simetría y sus diagonales también se cruzan justo en el centro?",
-      "¿En qué figura las diagonales no solo se cruzan en el centro, sino que además son perpendiculares?",
+      {
+        str: "¿Cuál es el nombre de la figura que parece un cuadrado inclinado y tiene las diagonales que se cruzan en ángulo recto?",
+        answered: false,
+      },
+      {
+        str: "¿Cuál tiene dos ejes de simetría y sus diagonales también se cruzan justo en el centro?",
+        answered: false,
+      },
+      {
+        str: "¿En qué figura las diagonales no solo se cruzan en el centro, sino que además son perpendiculares?",
+        answered: false,
+      },
     ],
   },
   {
     name: "Triángulo",
     color: "ff5733",
     questions: [
-      "¿De qué figura estamos hablando al decir que sus ángulos siempre suman 180 grados?",
-      "¿Cuál es la figura que se usa mucho en arquitectura porque es súper estable?",
+      {
+        str: "¿De qué figura estamos hablando al decir que sus ángulos siempre suman 180 grados?",
+        answered: false,
+      },
+      {
+        str: "¿Cuál es la figura que se usa mucho en arquitectura porque es súper estable?",
+        answered: false,
+      },
     ],
   },
 ];
+
+export function getAllQuestions(): Question[] {
+  return figures.flatMap(figure => figure.questions);
+}
+
+export function getTotalQuestionCount(): number {
+  return getAllQuestions().length;
+}
 
 export const figuresInfo: FigureProps[] = [
   {
